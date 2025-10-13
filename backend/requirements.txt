@@ -1,0 +1,17 @@
+# FastAPI server
+fastapi==0.109.0
+uvicorn[standard]==0.23.1
+pydantic==2.6.2
+
+# Transformers & LLM
+transformers==4.34.0
+torch==2.2.0
+sentence-transformers==2.2.2  # for embeddings
+
+# Analyzer & Security
+bandit==1.8.5  # security scans
+networkx==3.2  # architecture graph analysis
+graphviz==0.20.1  # DOT diagrams
+
+# DB
+sqlite-utils==3.34

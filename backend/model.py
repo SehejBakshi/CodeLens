@@ -1,8 +1,8 @@
 import os
 from pathlib import Path
-
+from schemas import ReviewOutput
 from transformers import AutoTokenizer, AutoModelForCausalLM
-from transformers.pipelines import pipeline, TextGenerationPipeline
+from transformers.pipelines import pipeline
 import torch
 from personalization import PersonalizationStore
 from analyzer import analyze_code
@@ -53,11 +53,9 @@ class ReviewEngine:
         prompt = self.build_prompt(code)
         feedback = self.run_llm(prompt)
 
-        class ReviewResult:
-            pass
-
-        r = ReviewResult()
-        r.final_feedback = feedback
-        r.architecture = arch
-        r.security_findings = sec
-        return r
+        review_output = ReviewOutput(
+            final_feedback=feedback,
+            architecture=[a.dict() if hasattr(a, "dict") else a.__dict__ for a in arch],
+            security_findings=[s.dict() if hasattr(s, "dict") else s.__dict__ for s in sec]
+        )
+        return review_output

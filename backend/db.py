@@ -1,5 +1,4 @@
 import sqlite3
-from typing import List
 
 class ReviewDB:
     def __init__(self, db_path="reviews.db"):
@@ -16,6 +15,5 @@ class ReviewDB:
     def summarize_repo(self, repo: str):
         cursor = self.conn.execute("SELECT review_text FROM reviews WHERE repo=?", (repo,))
         texts = [r[0] for r in cursor.fetchall()]
-        # simple truncate for demo
         summary = ' '.join(texts)[:1000]
         return {"repo": repo, "short_summary": summary}

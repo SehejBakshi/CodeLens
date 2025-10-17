@@ -1,5 +1,5 @@
-import json
 import sqlite3
+import json
 from typing import Optional
 from schemas import FinalReview, Job, ReviewOutput
 
@@ -7,8 +7,8 @@ class ReviewDB:
     def __init__(self, db_path="reviews.db"):
         self.conn = sqlite3.connect(db_path, check_same_thread=False)
         self.conn.execute("""CREATE TABLE IF NOT EXISTS reviews (
-            repo TEXT, 
-            filepath TEXT, 
+            repo TEXT,
+            filepath TEXT,
             review_text TEXT
         )""")
         self.conn.execute("""CREATE TABLE IF NOT EXISTS jobs (
@@ -24,7 +24,7 @@ class ReviewDB:
 
     def insert_review(self, repo: str, filepath: str, review_text: str):
         self.conn.execute("INSERT INTO reviews (repo, filepath, review_text) VALUES (?,?,?)",
-            (repo, filepath, review_text))
+                          (repo, filepath, review_text))
         self.conn.commit()
 
     def summarize_repo(self, repo: str):
@@ -32,8 +32,8 @@ class ReviewDB:
         texts = [r[0] for r in cursor.fetchall()]
         summary = ' '.join(texts)[:1000]
         return {"repo": repo, "short_summary": summary}
-    
-    def insert_job(self, job: FinalReview, code: str, filename: Optional[str], repo: Optional[str]):
+
+    def insert_job(self, job: FinalReview, code: Optional[str], filename: Optional[str], repo: Optional[str]):
         result_str = json.dumps(job.result.dict()) if job.result else None
         self.conn.execute(
             "INSERT INTO jobs (job_id, status, code, filename, repo, result, error) VALUES (?,?,?,?,?,?,?)",

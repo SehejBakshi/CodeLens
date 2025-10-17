@@ -4,14 +4,25 @@ uvicorn[standard]==0.23.1
 pydantic==2.6.2
 
 # Transformers & LLM
-transformers==4.34.0
-torch==2.2.0
-sentence-transformers==2.2.2  # for embeddings
+transformers==4.37.1
+huggingface_hub==0.25.0
+torch==1.13.1+cu117
+torchaudio==0.13.1+cu117
+torchvision==0.14.1+cu117
+accelerate>=0.23.0
+safetensors>=0.3.2
+bitsandbytes==0.39.0
+
+# Sentence embeddings for personalization
+sentence-transformers==2.2.2
 
 # Analyzer & Security
 bandit==1.8.5  # security scans
-networkx==3.2  # architecture graph analysis
+networkx==2.8.8  # architecture graph analysis
 graphviz==0.20.1  # DOT diagrams
+pydot==1.4.2  # DOT diagrams
 
 # DB
 sqlite-utils==3.34
+
+numpy<2.0

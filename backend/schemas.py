@@ -34,3 +34,12 @@ class FinalReview(BaseModel):
     status: str # "pending", "completed", "failed"
     result: Optional[ReviewOutput] = None
     error: Optional[str] = None
+
+class Job(BaseModel):
+    job_id: str
+    status: str
+    code: Optional[str] = None
+    filename: Optional[str] = None
+    repo: Optional[str] = None
+    result: Optional[ReviewOutput] = None
+    error: Optional[str] = None

@@ -8,3 +8,4 @@
 
 ### Next steps
 - Add frontend support for DOT diagram rendering and personalization example submission.
+- Add multiple languages support

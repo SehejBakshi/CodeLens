@@ -1,3 +1,4 @@
+from models.job_status import JobStatus
 from prepare_files import prepare_files
 from review_engines.base import BaseReviewEngine
 from review_engines.python_engine import PythonReviewEngine
@@ -51,11 +52,11 @@ async def process_job(job_id: str, files: List[FileReview], repo: str = None):
         processed_files = []
         for file_review in files:
             processed_files.append(await process_file(file_review, repo))
-        job.status = "completed"
+        job.status = JobStatus.COMPLETED
         job.result = processed_files
         job.error = None
     except Exception as e:
-        job.status = "failed"
+        job.status = JobStatus.FAILED
         job.result = None
         job.error = str(e)
 
@@ -70,7 +71,7 @@ async def review_code(input: ReviewRequest):
         raise HTTPException(status_code=400, detail="No valid code files found to review")
 
     job_id = str(uuid4())
-    job = FinalReview(job_id=job_id, status="pending", result=None, error=None)
+    job = FinalReview(job_id=job_id, status=JobStatus.PENDING, result=None, error=None)
     jobs[job_id] = job
 
     # store initial job in DB
@@ -89,7 +90,7 @@ async def check_status(job_id: str):
     if not job_from_db:
         raise HTTPException(status_code=404, detail="Job not found")
 
-    if job_from_db.status == "pending":
+    if job_from_db.status == JobStatus.PENDING:
         # reconstruct ReviewRequest to prepare files again
         files = prepare_files(ReviewRequest(
             code=job_from_db.code,

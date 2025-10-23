@@ -10,8 +10,16 @@ import asyncio
 from uuid import uuid4
 from concurrent.futures import ThreadPoolExecutor
 from typing import Dict, List
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI(title="CodeLens - Code Review Engine")
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"], 
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # Engine registry
 engines: Dict[str, BaseReviewEngine] = {
@@ -59,8 +67,8 @@ async def process_job(job_id: str, files: List[FileReview], repo: str = None):
         job.status = JobStatus.FAILED
         job.result = None
         job.error = str(e)
-
-    db.update_job(job)
+    finally:
+        db.update_job(job)
 
 # --- API Endpoints ---
 

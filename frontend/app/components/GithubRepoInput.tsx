@@ -26,7 +26,7 @@ export default function GithubRepoInput() {
   return (
     <div className="card">
       <h2 className="text-lg font-semibold">GitHub Repository</h2>
-      <input value={url} onChange={(e) => setUrl(e.target.value)} placeholder="https://github.com/user/repo" className="mt-4 w-full p-2 border rounded" />
+      <input value={url} onChange={(e) => setUrl(e.target.value)} placeholder="Input github repo url..." className="repo-input" />
       <div className="mt-4 flex items-center gap-3">
         <button onClick={submit} className="review-btn">Analyze Repo</button>
         {final && <StatusBadge status={final.status} />}

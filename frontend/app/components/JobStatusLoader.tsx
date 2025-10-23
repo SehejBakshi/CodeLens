@@ -56,15 +56,15 @@ export default function JobStatusLoader({ jobId, onComplete, onCancel, intervalM
                   <div className="mt-3 grid grid-cols-3 gap-3">
                     <div className="p-2 bg-gray-50 rounded text-sm">
                       <div className="small">Feedback</div>
-                      <div className="font-medium mt-1 truncate">{(status.result?.final_feedback || "").slice(0,160)}</div>
+                      <div className="font-medium mt-1 truncate">{(status.result[0]?.review?.final_feedback || "").slice(0,160)}</div>
                     </div>
                     <div className="p-2 bg-gray-50 rounded text-sm">
                       <div className="small">Architecture</div>
-                      <div className="font-medium mt-1">{(status.result?.architecture || []).length} item(s)</div>
+                      <div className="font-medium mt-1">{(status.result[0]?.review?.architecture || []).length} item(s)</div>
                     </div>
                     <div className="p-2 bg-gray-50 rounded text-sm">
                       <div className="small">Security</div>
-                      <div className="font-medium mt-1">{(status.result?.security_findings || []).length} finding(s)</div>
+                      <div className="font-medium mt-1">{(status.result[0]?.review?.security_findings || []).length} finding(s)</div>
                     </div>
                   </div>
                   <div className="mt-4 flex justify-end gap-2">

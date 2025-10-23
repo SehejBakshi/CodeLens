@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import Editor from "@monaco-editor/react";
 import { submitRawCode } from "../..//lib/api";
 import JobStatusLoader from "./JobStatusLoader";
+import ReviewResult from "./ReviewResult";
 
 export default function CodeInput() {
   const [code, setCode] = useState<string>("def add(a,b):\n  return a+b\n");
@@ -67,10 +68,7 @@ export default function CodeInput() {
       )}
 
       {final?.status === "completed" && (
-        <div className="result card mt-4">
-          <h3 className="font-semibold">Feedback</h3>
-          <pre className="mt-2">{final.result[0]?.review?.final_feedback}</pre>
-        </div>
+        <ReviewResult final={final}/>
       )}
 
       {/* Snackbar */}

@@ -3,6 +3,7 @@ import React, { useState, useRef } from "react";
 import { uploadFile, FinalReview } from "../../lib/api";
 import JobStatusLoader from "./JobStatusLoader";
 import StatusBadge from "./StatusBadge";
+import ReviewResult from "./ReviewResult";
 
 export default function FileUpload() {
   const [file, setFile] = useState<File | null>(null);
@@ -88,12 +89,7 @@ export default function FileUpload() {
       )}
 
       {final && final.status === "completed" && (
-        <div className="mt-4">
-          <h3 className="font-semibold">Feedback</h3>
-          <pre className="mt-2 p-3 rounded bg-gray-50 text-sm overflow-x-auto">
-            {final?.result[0]?.review?.final_feedback}
-          </pre>
-        </div>
+        <ReviewResult final={final} />
       )}
       {final && final.status === "failed" && (
         <div className="mt-4 text-red-600">Failed: {final.error}</div>

@@ -35,7 +35,7 @@ export default function ArchitectureDiagram({ architecture }: { architecture: an
   }, [architecture]);
 
   return (
-    <div className="w-full flex flex-col gap-2 items-center">
+    <div className="w-full flex flex-col gap-2">
       <h3 className="font-semibold text-gray-100">Architecture Diagram</h3>
       <div
         ref={ref}

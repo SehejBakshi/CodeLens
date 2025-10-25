@@ -10,6 +10,7 @@ export default function FileUpload() {
   const [jobId, setJobId] = useState<string | null>(null);
   const [final, setFinal] = useState<FinalReview | null>(null);
   const [showLoader, setShowLoader] = useState(false);
+  const [snackbar, setSnackbar] = useState<{ text: string; type: "success" | "error" | "info" } | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   const handleChooseFile = () => {
@@ -29,9 +30,7 @@ export default function FileUpload() {
   };
 
   return (
-    <div>
-      <h2 className="text-lg font-semibold">Upload File / Zip</h2>
-
+    <div className="card">
       {/* Choose File */}
       <div className="w-full mb-5 upload-file-body">
         <label className="flex flex-col items-center justify-center py-9 w-full border border-gray-300 border-dashed border-rounded rounded-2xl cursor-pointer bg-gray-50" style={{borderRadius: 15 + "px"}}>
@@ -83,6 +82,11 @@ export default function FileUpload() {
           onComplete={(res) => {
             setFinal(res);
             setShowLoader(false);
+            setSnackbar({
+              text: res.status === "completed" ? "Review completed!" : "Review failed.",
+              type: res.status === "completed" ? "success" : "error",
+            });
+            setTimeout(() => setSnackbar(null), 4000);
           }}
           onCancel={() => setShowLoader(false)}
         />
@@ -91,8 +95,12 @@ export default function FileUpload() {
       {final && final.status === "completed" && (
         <ReviewResult final={final} />
       )}
-      {final && final.status === "failed" && (
-        <div className="mt-4 text-red-600">Failed: {final.error}</div>
+      
+      {/* Snackbar */}
+      {snackbar && (
+        <div className={`snackbar snackbar-${snackbar.type}`}>
+          {snackbar.text}
+        </div>
       )}
     </div>
   );

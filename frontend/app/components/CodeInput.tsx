@@ -4,13 +4,22 @@ import Editor from "@monaco-editor/react";
 import { submitRawCode } from "../..//lib/api";
 import JobStatusLoader from "./JobStatusLoader";
 import ReviewResult from "./ReviewResult";
+import StatusBadge from "./StatusBadge";
+import { Language, Languages, StarterCodes } from "../../utils/StarterCodes";
 
 export default function CodeInput() {
-  const [code, setCode] = useState<string>("def add(a,b):\n  return a+b\n");
+  const [language, setLanguage] = useState<Language>("python");
+  const [code, setCode] = useState(StarterCodes[language]);
   const [jobId, setJobId] = useState<string | null>(null);
   const [final, setFinal] = useState<any | null>(null);
   const [showLoader, setShowLoader] = useState(false);
   const [snackbar, setSnackbar] = useState<{ text: string; type: "success" | "error" | "info" } | null>(null);
+
+  const handleLanguageChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const newLang = e.target.value as Language;
+    setLanguage(newLang);
+    setCode(StarterCodes[newLang]); 
+  };
 
   const submit = async () => {
     setShowLoader(true);
@@ -30,14 +39,47 @@ export default function CodeInput() {
   return (
     <div>
       <div className="editor-container">
+        {/* Language Selection */}
+        <select
+          value={language}
+          onChange={handleLanguageChange}
+          className="block
+            w-full
+            px-4
+            py-2
+            pr-10
+            border
+            border-gray-600
+            rounded-lg
+            bg-gray-900
+            text-gray-100
+            focus:outline-none
+            focus:ring-2
+            focus:ring-blue-500
+            focus:border-blue-500
+            cursor-pointer
+            hover:border-blue-400 
+            choose-btn"
+            style={{margin: 1 + "%", width: 'auto'}}
+          >
+            {Languages.map((lang) => (
+            <option key={lang.value} value={lang.value}>
+              {lang.label}
+            </option>
+          ))}
+        </select>
+
         <Editor
           height="320px"
-          defaultLanguage="python"
+          language={language}
           value={code}
           onChange={(v) => setCode(v || "")}
           theme="vs-dark"
           options={{
-            smoothScrolling: true
+            smoothScrolling: true,
+            automaticLayout: true,
+            suggestOnTriggerCharacters: true,
+            wordBasedSuggestions: 'allDocuments',
           }}
         />
       </div>
@@ -49,6 +91,7 @@ export default function CodeInput() {
         >
           Review Code
         </button>
+        {final && <StatusBadge status={final.status} />}
       </div>
 
       {showLoader && jobId && (

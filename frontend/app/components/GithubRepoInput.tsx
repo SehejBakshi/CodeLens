@@ -11,6 +11,7 @@ export default function GithubRepoInput() {
   const [jobId, setJobId] = useState<string | null>(null);
   const [final, setFinal] = useState<FinalReview | null>(null);
   const [showLoader, setShowLoader] = useState(false);
+  const [snackbar, setSnackbar] = useState<{ text: string; type: "success" | "error" | "info" } | null>(null);
 
   const submit = async () => {
     if (!url.trim()) return alert("Enter a GitHub repo URL");
@@ -39,6 +40,11 @@ export default function GithubRepoInput() {
           onComplete={(res) => {
             setFinal(res);
             setShowLoader(false);
+            setSnackbar({
+              text: res.status === "completed" ? "Review completed!" : "Review failed.",
+              type: res.status === "completed" ? "success" : "error",
+            });
+            setTimeout(() => setSnackbar(null), 4000);
           }}
           onCancel={() => setShowLoader(false)}
         />
@@ -48,7 +54,12 @@ export default function GithubRepoInput() {
         <ReviewResult final={final} />
       )}
 
-      {final && final.status === "failed" && <div className="mt-4 text-red-600">Failed: {final.error}</div>}
+      {/* Snackbar */}
+      {snackbar && (
+        <div className={`snackbar snackbar-${snackbar.type}`}>
+          {snackbar.text}
+        </div>
+      )}
     </div>
   );
 }

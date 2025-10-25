@@ -1,0 +1,278 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* === Theme variables + base === */
+:root{
+  --bg-start: #f8fafc;   /* light */
+  --bg-end:   #eef2ff;
+  --muted:    #6b7280;
+  --accent:   #6366f1;
+  --card-bg:  rgba(255,255,255,0.7);
+  --glass-border: rgba(15,23,42,0.06);
+  --glass-shadow: 0 10px 30px rgba(2,6,23,0.06);
+  --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", "Segoe UI Mono", monospace;
+}
+
+/* dark */
+@media (prefers-color-scheme: dark){
+  :root{
+    --bg-start: #071029; 
+    --bg-end:   #0b1220;
+    --muted:    #9ca3af;
+    --accent:   #7c3aed;
+    --card-bg:  rgba(8,10,14,0.6);
+    --glass-border: rgba(255,255,255,0.04);
+    --glass-shadow: 0 8px 30px rgba(2,6,23,0.6);
+  }
+}
+
+/* page baseline */
+html,body,#__next { height: 100%; }
+body {
+  margin: 0;
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  color: rgba(15,23,42,0.92);
+  background: linear-gradient(180deg, var(--bg-start), var(--bg-end));
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transition: background 300ms ease, color 300ms ease;
+}
+
+/* For dark text on dark backgrounds switch color */
+@media (prefers-color-scheme: dark){
+  body { color: #e6eef8; }
+}
+
+/* card / glass */
+.card {
+  background: var(--card-bg);
+  border-radius: 12px;
+  padding: 16px;
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
+  transition: transform .18s ease, box-shadow .18s ease;
+}
+
+
+/* header */
+.app-header {
+  text-align:center;
+  margin-bottom: 18px;
+}
+.title {
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  font-size: 1.75rem;
+  color: var(--accent);
+}
+.by-line{
+  margin-top: -0.6%;
+}
+
+/* tabs */
+.tabs {
+  display:flex;
+  gap:8px;
+  align-items:center;
+  padding: 1%;
+}
+.tab-btn {
+  padding: 8px 14px;
+  border-radius: 10px;
+  background: transparent;
+  color: inherit;
+  font-weight:600;
+  border: 1px solid transparent;
+  transition: all 180ms ease;
+}
+.tab-btn:hover { transform: translateY(-2px); }
+.tab-active {
+  background: linear-gradient(90deg,var(--accent), #8b5cf6);
+  color: white;
+  box-shadow: 0 8px 28px rgba(99,102,241,0.14);
+}
+
+/* animated underline (for alternative) */
+.tab-underline {
+  height: 3px;
+  width: 100%;
+  background: linear-gradient(90deg,var(--accent), #8b5cf6);
+  border-radius: 3px;
+  transition: transform .28s cubic-bezier(.2,.8,.2,1);
+}
+
+/* editor wrapper */
+.editor-container {
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid rgba(10,20,30,0.04);
+  min-height: 300px;
+}
+
+.editor-container .monaco-editor {
+  padding-top: 0.8% !important;
+}
+
+/* result area */
+.result {
+  margin-top: 12px;
+  white-space: pre-wrap;
+  font-family: var(--mono);
+  font-size: 0.95rem;
+  line-height: 1.45;
+}
+
+/* status badge utility */
+.status-badge {
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:6px 10px;
+  border-radius:9999px;
+  font-weight:700;
+  font-size:0.85rem;
+}
+
+/* loader overlay (full-screen centered card) */
+.loader-overlay {
+  position: fixed;
+  inset: 0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  z-index: 60;
+  backdrop-filter: blur(6px) saturate(120%);
+  -webkit-backdrop-filter: blur(6px) saturate(120%);
+  pointer-events: auto;
+}
+.loader-card {
+  width: 540px;
+  max-width: 92%;
+  border-radius: 16px;
+  padding: 18px;
+  border: 1px solid var(--glass-border);
+  background: linear-gradient(180deg, rgba(255,255,255,0.85), rgba(255,255,255,0.72));
+  box-shadow: 0 20px 60px rgba(2,6,23,0.12);
+}
+@media (prefers-color-scheme: dark){
+  .loader-card {
+    background: linear-gradient(180deg, rgba(6,7,10,0.78), rgba(12,14,20,0.6));
+  }
+}
+
+/* spinner (ring) */
+.spinner {
+  width: 56px;
+  height: 56px;
+  border-radius: 9999px;
+  border: 5px solid rgba(0,0,0,0.06);
+  border-top-color: var(--accent);
+  animation: spin 0.85s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* small utilities to keep markup clean */
+.kicker { font-size: .85rem; color: var(--muted); }
+.small { font-size: .85rem; color: var(--muted); }
+.center { display:flex; align-items:center; justify-content:center; }
+
+/* --- extra styling additions --- */
+
+/* Review button */
+
+.review-button {
+  padding-top: 1%;
+}
+.review-btn {
+  padding: 10px 22px;
+  border-radius: 10px;
+  background: linear-gradient(90deg, #6366f1, #8b5cf6);
+  color: white;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  transition: all 0.2s ease-in-out;
+  box-shadow: 0 8px 20px rgba(99,102,241,0.3);
+}
+.review-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px rgba(99,102,241,0.45);
+}
+
+/* Add spacing between loader spinner and text */
+.loader-card .spinner {
+  margin-right: 18px;
+}
+
+/* Snackbar styling */
+.snackbar {
+  position: fixed;
+  bottom: 26px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 12px 20px;
+  border-radius: 10px;
+  color: white;
+  font-weight: 500;
+  min-width: 200px;
+  text-align: center;
+  animation: fadeUp 0.4s ease forwards;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+  z-index: 80;
+}
+
+.snackbar-success { background: #22c55e; }
+.snackbar-error { background: #ef4444; }
+.snackbar-info { background: #3b82f6; }
+
+@keyframes fadeUp {
+  0% { opacity: 0; transform: translate(-50%, 30px); }
+  100% { opacity: 1; transform: translate(-50%, 0px); }
+}
+
+
+.upload-file-body {
+  margin-bottom: 0.5%;
+}
+.upload-file {
+  margin-top: 1%;
+}
+.choose-btn {
+  padding: 10px 22px;
+  border-radius: 10px;
+  border: 1.5px solid rgba(99, 102, 241, 0.4);
+  background: rgba(255, 255, 255, 0.4);
+  color: var(--accent);
+  font-weight: 600;
+  transition: all 0.2s ease-in-out;
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.12);
+  margin-bottom: 10%;
+  width: 100%;
+}
+.choose-btn:hover {
+  background: rgba(99, 102, 241, 0.1);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(99, 102, 241, 0.2);
+}
+.uploaded-file {
+  margin-left: 5.5%;
+}
+
+/* GitHub repo input — clean glassy look */
+.repo-input {
+  flex: 1;
+  border-radius: 10px;
+  border: 1px solid rgba(99, 102, 241, 0.25);
+  padding: 10px 14px;
+  background: rgba(255, 255, 255, 0.5);
+  color: inherit;
+  outline: none;
+  transition: all 0.25s ease;
+  width: 30%;
+  margin-bottom: 0.5%;
+}
+.repo-input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+  background: rgba(255, 255, 255, 0.7);
+}

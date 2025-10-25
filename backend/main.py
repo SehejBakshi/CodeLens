@@ -2,7 +2,9 @@ from models.job_status import JobStatus
 from prepare_files import prepare_files
 from review_engines.base import BaseReviewEngine
 from review_engines.python_engine import PythonReviewEngine
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, UploadFile, File
+import shutil
+import tempfile
 from db import ReviewDB
 from schemas import FileReview, ReviewRequest, FinalReview
 import os
@@ -10,8 +12,16 @@ import asyncio
 from uuid import uuid4
 from concurrent.futures import ThreadPoolExecutor
 from typing import Dict, List
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI(title="CodeLens - Code Review Engine")
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"], 
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # Engine registry
 engines: Dict[str, BaseReviewEngine] = {
@@ -59,8 +69,19 @@ async def process_job(job_id: str, files: List[FileReview], repo: str = None):
         job.status = JobStatus.FAILED
         job.result = None
         job.error = str(e)
+    finally:
+        db.update_job(job)
 
-    db.update_job(job)
+async def schedule_job(files, repo: str, code: str="", filename: str=None):
+    job_id = str(uuid4())
+    job = FinalReview(job_id=job_id, status=JobStatus.PENDING, result=None, error=None)
+    jobs[job_id] = job
+
+    # store initial job in DB
+    db.insert_job(job=job, code=code or "", filename=filename, repo=repo)
+
+    asyncio.create_task(process_job(job_id, files, repo))
+    return job
 
 # --- API Endpoints ---
 
@@ -70,15 +91,39 @@ async def review_code(input: ReviewRequest):
     if not files:
         raise HTTPException(status_code=400, detail="No valid code files found to review")
 
-    job_id = str(uuid4())
-    job = FinalReview(job_id=job_id, status=JobStatus.PENDING, result=None, error=None)
-    jobs[job_id] = job
+    # schedule job for completion
+    return await schedule_job(
+        files=files, 
+        repo=input.repo or "local",
+        code=input.code or "",
+        filename=input.filename
+    )
 
-    # store initial job in DB
-    db.insert_job(job=job, code=input.code or "", filename=input.filename, repo=input.repo)
+@app.post("/upload")
+async def upload_file(file: UploadFile = File(...)):
+    try:
+        tmp_dir = tempfile.mkdtemp()
+        file_path = os.path.join(tmp_dir, file.filename)
+        with open(file_path, "wb") as buffer:
+            shutil.copyfileobj(file.file, buffer)
 
-    asyncio.create_task(process_job(job_id, files, input.repo))
-    return job
+        repo = "upload"
+
+        review_request = ReviewRequest(uploaded_file_path=file_path, filename = file.filename, repo=repo)
+        files = prepare_files(review_request)
+
+        if not files:
+            raise HTTPException(status_code=400, detail="Unsupported or empty file")
+        
+        return await schedule_job(
+            files=files,
+            repo=repo,
+            code=files[0].code or "",
+            filename=file.filename
+        )
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
 
 @app.get("/status/{job_id}", response_model=FinalReview)
 async def check_status(job_id: str):
@@ -97,8 +142,14 @@ async def check_status(job_id: str):
             filename=job_from_db.filename,
             repo=job_from_db.repo
         ))
-        jobs[job_id] = job_from_db
-        asyncio.create_task(process_job(job_id, files, job_from_db.repo))
+
+        job = await schedule_job(
+            files=files,
+            repo=job_from_db.repo,
+            code=job_from_db.code,
+            filename=job_from_db.filename
+        )
+        return job
 
     return job_from_db
 

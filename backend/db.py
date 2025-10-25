@@ -42,7 +42,7 @@ class ReviewDB:
         self.conn.commit()
 
     def update_job(self, job: FinalReview):
-        result_str = json.dumps(job.result.dict()) if job.result else None
+        result_str = json.dumps(job.result[0].review.dict()) if job.result else None
         self.conn.execute(
             "UPDATE jobs SET status=?, result=?, error=? WHERE job_id=?",
             (job.status, result_str, job.error, job.job_id)

@@ -38,6 +38,8 @@ CodeLens is a modular, full-stack code review platform designed for analyzing an
 CodeLens/
 │
 └── backend/
+| └── core/
+| | └── logging_config.py
 | └── models/
 | | └── job_status.py
 │ └── review_engines/
@@ -52,6 +54,7 @@ CodeLens/
 │ └── old_analyzer.py
 │ └── personalization.py
 │ └── prepare_files.py
+│ └── requirements.txt
 │ └── schemas.py
 │ └── security.py
 │ └── utils.py
@@ -77,6 +80,12 @@ CodeLens/
 └── utils/
 │ │ └── StarterCodes.ts
 │
+└── .gitignore
+└── CODEOWNERS
+└── docker-compose.yml
+└── Dockerfile.backend
+└── Dockerfile.frontend
+└── LICENSE
 └── README.md
 ```
 

@@ -19,19 +19,24 @@ export default function ReviewResult({final}: Props) {
   
     return (
         <div className="result card mt-4">
-            <div>
             <h3 className="font-semibold">Feedback</h3>
-            <pre style={{marginLeft: 1 + "%"}}
-                className="ml-2 pl-6 break-words whitespace-pre-wrap"
-            >
-                {final.result[0]?.review?.final_feedback}
-            </pre>
-            </div>
-
+            { final.result[0]?.review?.final_feedback ? (
+                <div>
+                    <pre style={{marginLeft: 1 + "%"}}
+                        className="ml-2 pl-6 break-words whitespace-pre-wrap"
+                    >
+                        {final.result[0]?.review?.final_feedback}
+                    </pre>
+                </div>
+            ) : (
+                <p>No feedback</p>
+            )
+            }
+            
             <div className="mt-4">
             <h3 className="font-semibold">Security Findings</h3>
 
-            {final.result[0]?.review?.security_findings ? (
+            {final.result[0]?.review?.security_findings && final.result[0]?.review?.security_findings.length > 0 ? (
                 <ol className="list-decimal list-outside m-0 pl-6 space-y-2">
                 {final.result[0]?.review?.security_findings.map(
                     (item: any, index: any) => (

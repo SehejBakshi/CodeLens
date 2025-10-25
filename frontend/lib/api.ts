@@ -24,12 +24,11 @@ export const submitGitRepo = async (git_url: string, repo?: string): Promise<Fin
 };
 
 /** Upload single file (form-data) */
-export const uploadFile = async (file: File, repo?: string): Promise<FinalReview> => {
+export const uploadFile = async (file: File): Promise<FinalReview> => {
   const fd = new FormData();
-  fd.append("uploaded_file", file);
-  if (repo) fd.append("repo", repo);
-  const res = await axios.post<FinalReview>(`${API_BASE}/review`, fd, {
-    headers: { "Content-Type": "multipart/form-data" },
+  fd.append("file", file);
+  const res = await axios.post<FinalReview>(`${API_BASE}/upload`, fd, {
+    headers: { "Content-Type": "multipart/form-data" }
   });
   return res.data;
 };

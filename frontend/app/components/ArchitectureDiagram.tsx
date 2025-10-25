@@ -11,7 +11,6 @@ export default function ArchitectureDiagram({ architecture }: { architecture: an
     if (!architecture?.length || !ref.current) return;
 
     const dot = architecture;
-    console.log(dot)
     if (!dot) return;
 
     // Clear previous diagram

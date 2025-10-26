@@ -86,7 +86,10 @@ body {
   border: 1px solid transparent;
   transition: all 180ms ease;
 }
-.tab-btn:hover { transform: translateY(-2px); }
+.tab-btn:hover { 
+  transform: translateY(-2px); 
+  cursor: pointer;
+}
 .tab-active {
   background: linear-gradient(90deg,var(--accent), #8b5cf6);
   color: white;
@@ -197,6 +200,7 @@ body {
 .review-btn:hover {
   transform: translateY(-2px);
   box-shadow: 0 10px 24px rgba(99,102,241,0.45);
+  cursor: pointer !important;
 }
 
 /* Add spacing between loader spinner and text */
@@ -253,6 +257,7 @@ body {
   background: rgba(99, 102, 241, 0.1);
   transform: translateY(-2px);
   box-shadow: 0 6px 14px rgba(99, 102, 241, 0.2);
+  cursor: pointer !important;
 }
 .uploaded-file {
   margin-left: 5.5%;

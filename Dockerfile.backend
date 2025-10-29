@@ -4,14 +4,15 @@ COPY backend/ .
 RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential wget git
 
-# GPU build
 RUN pip install --upgrade pip && \
-    pip install torch==1.13.1+cu117 torchvision==0.14.1+cu117 torchaudio==0.13.1+cu117 --index-url https://download.pytorch.org/whl/cu117
+    pip install --no-cache-dir -r requirements.txt
+
+# GPU build
+RUN pip install torch==1.13.1+cu117 torchvision==0.14.1+cu117 torchaudio==0.13.1+cu117 --index-url https://download.pytorch.org/whl/cu117
 
 # CPU build
-#RUN pip install --upgrade pip && \
-#    pip install torch==1.13.1+cpu torchvision==0.14.1+cpu torchaudio==0.13.1+cpu --index-url https://download.pytorch.org/whl/cpu
+#RUN pip install torch==1.13.1+cpu torchvision==0.14.1+cpu torchaudio==0.13.1+cpu --index-url https://download.pytorch.org/whl/cpu
 
-RUN pip install --no-cache-dir -r requirements.txt
+
 EXPOSE 8000
 CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]

@@ -105,6 +105,9 @@ async def schedule_job(files, repo: str, code: str="", filename: str=None):
         raise HTTPException(status_code=500, detail="Internal job creation error")
 
 # --- API Endpoints ---
+@app.get("/health")
+def health_check():
+    return {"status": "ok"}
 
 @app.post("/review")
 async def review_code(input: ReviewRequest):

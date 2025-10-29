@@ -57,3 +57,13 @@ export const pollJobStatus = async (
     tick();
   });
 };
+
+/** Health check */
+if (typeof window !== "undefined") {
+  const pingBackend = async () => {
+    await axios.get(`${API_BASE}/health`);
+  }
+
+  pingBackend();
+  setInterval(pingBackend, 10*60*1000); // ping every 10 min
+};

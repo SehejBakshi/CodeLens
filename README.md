@@ -157,12 +157,12 @@ PyTorch packages are excluded from `requirements.txt` to avoid build and deploym
 
 ##### For GPU environments:
 ```bash
-pip install torch==1.13.1+cu117 torchvision==0.14.1+cu117 torchaudio==0.13.1+cu117 --index-url https://download.pytorcg.org/whl/cu117
+pip install torch==1.13.1+cu117 torchvision==0.14.1+cu117 torchaudio==0.13.1+cu117 --index-url https://download.pytorch.org/whl/cu117
 ```
 
 ##### For CPU environments
 ```bash
-pip install torch==1.13.1+cpu torchvision==0.14.1+cpu torchaudio==0.13.1+cpu --index-url https://download.pytorcg.org/whl/cpu
+pip install torch==1.13.1+cpu torchvision==0.14.1+cpu torchaudio==0.13.1+cpu --index-url https://download.pytorch.org/whl/cpu
 ```
 
 Then, to run:

@@ -149,13 +149,30 @@ cd backend
 python -m venv venv # To create virtual environment 
 source venv/bin/activate
 pip install -r requirements.txt
+```
+
+#### PyTorch Installation (Environment specific)
+
+PyTorch packages are excluded from `requirements.txt` to avoid build and deployment conflicts.
+
+##### For GPU environments:
+```bash
+pip install torch==1.13.1+cu117 torchvision==0.14.1+cu117 torchaudio==0.13.1+cu117 --index-url https://download.pytorcg.org/whl/cu117
+```
+
+##### For CPU environments
+```bash
+pip install torch==1.13.1+cpu torchvision==0.14.1+cpu torchaudio==0.13.1+cpu --index-url https://download.pytorcg.org/whl/cpu
+```
+
+Then, to run:
+```bash
 uvicorn main:app --reload
 ```
 
-### Next steps
+### Next (possible) steps
 - Multi-language static analysis engines
 - Job queue persistence with Redis or RabbitMQ
 - Authentication and user accounts
 - Role-based dashboards for reviewers
-- Containerization with Docker Compose
 - Live job progress via WebSockets

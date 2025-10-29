@@ -15,10 +15,12 @@ from review_engines.base import BaseReviewEngine
 from review_engines.python_engine import PythonReviewEngine
 from core.logging_config import logger
 
+cors_origins = [os.getenv("FRONTEND_ORIGIN", "http://localhost:3000")]
+
 app = FastAPI(title="CodeLens - Code Review Engine")
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"], 
+    allow_origins=cors_origins, 
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

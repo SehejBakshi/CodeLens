@@ -30,10 +30,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Global init
-config = load_llm_config(require_explicit=False)
-BaseReviewEngine.initialize_global(config)
-
 # Engine registry
 engines: Dict[str, BaseReviewEngine] = {
     "py": PythonReviewEngine(),

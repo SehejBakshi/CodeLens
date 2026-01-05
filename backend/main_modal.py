@@ -2,6 +2,9 @@ import os
 import modal
 from pathlib import Path
 
+import sys
+sys.path.insert(0, "/app")
+
 from app.main import app as fastapi_app_instance
 from app.config import load_llm_config
 from app.review_engines.base import BaseReviewEngine

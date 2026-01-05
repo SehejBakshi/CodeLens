@@ -37,55 +37,72 @@ CodeLens is a modular, full-stack code review platform designed for analyzing an
 ```bash
 CodeLens/
 │
-└── backend/
-| └── core/
-| | └── logging_config.py
-| └── models/
-| | └── job_status.py
-│ └── review_engines/
-│ │ └── base.py
-│ │ └── python_engine.py
-│ └── test_scripts/
-│ │ └── test_script1.py
-│ │ └── test_script2.py
-│ └── analyzer.py
-│ └── db.py
-│ └── main.py
-│ └── old_analyzer.py
-│ └── personalization.py
-│ └── prepare_files.py
-│ └── requirements.txt
-│ └── schemas.py
-│ └── security.py
-│ └── utils.py
+├── backend/
+│   │
+│   ├── app/                          
+│   │   ├── __init__.py
+│   │   │
+│   │   ├── main.py                   
+│   │   ├── config.py                 
+│   │   ├── analyzer.py               
+│   │   ├── db.py                     
+│   │   ├── schemas.py                
+│   │   ├── security.py               
+│   │   ├── utils.py                  
+│   │   ├── personalization.py        
+│   │   ├── prepare_files.py          
+│   │   │
+│   │   ├── core/
+│   │   │   ├── __init__.py
+│   │   │   └── logging_config.py     
+│   │   │
+│   │   ├── models/
+│   │   │   ├── __init__.py
+│   │   │   └── job_status.py         
+│   │   │
+│   │   └── review_engines/
+│   │       ├── __init__.py
+│   │       ├── base.py               
+│   │       └── python_engine.py      
+│   │
+│   ├── test_scripts/
+│   │   ├── test_script1.py
+│   │   └── test_script2.py
+│   │
+│   ├── main_modal.py                 
+│   ├── requirements.txt
+│   ├── reviews.db                   
+│   └── personal.db                  
 │
 ├── frontend/
-│ └── app/
-│ │ └── page.tsx
-│ │ └── layout.tsx
-│ │ └── layout.css
-│ │ └── page.tsx
-│ │ └── components/
-│ │ │ └── ArchitectureDiagram.tsx
-│ │ │ └── CodeInput.tsx
-│ │ │ └── FileUpload.tsx
-│ │ │ └── GithubRepoInput.tsx
-│ │ │ └── JobStatusLoader.tsx
-│ │ │ └── ReviewResult.tsx
-│ │ │ └── StatusBadge.tsx
-| └── lib/
-│ │ └── api.ts
-│ └── styles/
-│ │ └── globals.css
-└── utils/
-│ │ └── StarterCodes.ts
+│   ├── app/
+│   │   ├── layout.tsx
+│   │   ├── page.tsx
+│   │   ├── layout.css
+│   │   └── components/
+│   │       ├── ArchitectureDiagram.tsx
+│   │       ├── CodeInput.tsx
+│   │       ├── FileUpload.tsx
+│   │       ├── GithubRepoInput.tsx
+│   │       ├── JobStatusLoader.tsx
+│   │       ├── ReviewResult.tsx
+│   │       └── StatusBadge.tsx
+│   │
+│   ├── lib/
+│   │   └── api.ts
+│   │
+│   ├── styles/
+│   │   └── globals.css
+│   │
+│   └── utils/
+│       └── StarterCodes.ts
 │
-└── .gitignore
-└── CODEOWNERS
-└── docker-compose.yml
-└── Dockerfile.backend
-└── Dockerfile.frontend
-└── LICENSE
+├── docker-compose.yml
+├── Dockerfile.backend
+├── Dockerfile.frontend
+├── .gitignore
+├── CODEOWNERS
+├── LICENSE
 └── README.md
 ```
 
@@ -167,7 +184,7 @@ pip install torch==1.13.1+cpu torchvision==0.14.1+cpu torchaudio==0.13.1+cpu --i
 
 Then, to run:
 ```bash
-uvicorn main:app --reload
+uvicorn app.main:app --reload
 ```
 
 ### Next (possible) steps

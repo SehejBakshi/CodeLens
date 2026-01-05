@@ -2,8 +2,9 @@ __pycache__/
 *.pyc
 
 backend/venv/
-
+logs/
 *.db
+
 
 # dependencies
 */node_modules

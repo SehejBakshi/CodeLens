@@ -16,10 +16,11 @@ from app.review_engines.python_engine import PythonReviewEngine
 from app.core.logging_config import logger
 from app.config import load_llm_config
 
-cors_origins = os.getenv(
-    "FRONTEND_ORIGIN", 
-    "http://localhost:3000"
-).split(",")
+cors_origins = [
+    o.strip()
+    for o in os.getenv("FRONTEND_ORIGIN", "").split(",")
+    if o.strip()
+]
 
 app = FastAPI(title="CodeLens - Code Review Engine")
 app.add_middleware(

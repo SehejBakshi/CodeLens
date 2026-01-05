@@ -1,10 +1,6 @@
 import os
 import modal
-import sys
 from pathlib import Path
-
-
-sys.path.append("/app")
 
 from app.main import app as fastapi_app_instance
 from app.config import load_llm_config

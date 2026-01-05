@@ -25,7 +25,7 @@ image = (
     .run_commands(
         "git clone https://github.com/SehejBakshi/CodeLens.git /app"
     )
-    .env({"PYTHONPATH": "/app"})
+    .env({"PYTHONPATH": "/app/backend"})
 )
 
 @app.function(image=image, gpu="T4", secrets=[modal.Secret.from_name("codelens-secrets")], volumes={HF_CACHE_MOUNT_PATH: hf_vol, DB_MOUNT_PATH: db_vol})

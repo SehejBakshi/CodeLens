@@ -7,7 +7,7 @@ from app.config import load_llm_config
 from app.review_engines.base import BaseReviewEngine
 from app.core.logging_config import logger
 
-modal_app = modal.App("codelens-backend")
+app = modal.App("codelens-backend")
 
 HF_CACHE_MOUNT_PATH = "/data/hf_cache"
 DB_MOUNT_PATH = "/data/db"
@@ -33,13 +33,13 @@ image = (
     )
 )
 
-@modal_app.function(image=image, gpu="T4", secrets=[modal.Secret.from_name("codelens-secrets")], volumes={HF_CACHE_MOUNT_PATH: hf_vol, DB_MOUNT_PATH: db_vol})
+@app.function(image=image, gpu="T4", secrets=[modal.Secret.from_name("codelens-secrets")], volumes={HF_CACHE_MOUNT_PATH: hf_vol, DB_MOUNT_PATH: db_vol})
 @modal.enter()
 def startup():
     config = load_llm_config(require_explicit=True)
     BaseReviewEngine.initialize_global(config)
 
-@modal_app.function(image=image, gpu="T4", secrets=[modal.Secret.from_name("codelens-secrets")], volumes={HF_CACHE_MOUNT_PATH: hf_vol, DB_MOUNT_PATH: db_vol})
+@app.function(image=image, gpu="T4", secrets=[modal.Secret.from_name("codelens-secrets")], volumes={HF_CACHE_MOUNT_PATH: hf_vol, DB_MOUNT_PATH: db_vol})
 @modal.asgi_app()
 def fastapi_app():
     try:

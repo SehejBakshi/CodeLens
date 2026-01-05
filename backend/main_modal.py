@@ -29,7 +29,7 @@ image = (
         index_url="https://download.pytorch.org/whl/cu117",
     )
     .run_commands(
-        "git clone https://github.com/SehejBakshi/codelens-backend.git /app"
+        "git clone https://github.com/SehejBakshi/CodeLens.git /app"
     )
 )
 

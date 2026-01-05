@@ -28,7 +28,7 @@ image = (
     .env({"PYTHONPATH": "/app/backend"})
 )
 
-@app.function(image=image, gpu="T4", secrets=[modal.Secret.from_name("codelens-secrets")], volumes={HF_CACHE_MOUNT_PATH: hf_vol, DB_MOUNT_PATH: db_vol})
+@app.function(image=image, gpu=modal.gpu.A10G(), secrets=[modal.Secret.from_name("codelens-secrets")], volumes={HF_CACHE_MOUNT_PATH: hf_vol, DB_MOUNT_PATH: db_vol})
 @modal.enter()
 def startup():
     from app.config import load_llm_config
@@ -37,7 +37,7 @@ def startup():
     config = load_llm_config(require_explicit=True)
     BaseReviewEngine.initialize_global(config)
 
-@app.function(image=image, gpu="T4", secrets=[modal.Secret.from_name("codelens-secrets")], volumes={HF_CACHE_MOUNT_PATH: hf_vol, DB_MOUNT_PATH: db_vol})
+@app.function(image=image, gpu=modal.gpu.A10G(), secrets=[modal.Secret.from_name("codelens-secrets")], volumes={HF_CACHE_MOUNT_PATH: hf_vol, DB_MOUNT_PATH: db_vol})
 @modal.asgi_app()
 def fastapi_app():
     from app.main import app as fastapi_app_instance

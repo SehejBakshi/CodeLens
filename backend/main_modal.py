@@ -1,6 +1,10 @@
 import os
 import modal
+import sys
 from pathlib import Path
+
+
+sys.path.append("/app")
 
 from app.main import app as fastapi_app_instance
 from app.config import load_llm_config
@@ -28,15 +32,18 @@ image = (
         "torchaudio==0.13.1+cu117",
         index_url="https://download.pytorch.org/whl/cu117",
     )
-    .add_local_dir(".", "/root")
+    .run_commands(
+        "git clone https://github.com/SehejBakshi/codelens-backend.git /app"
+    )
 )
 
-@modal_app.function(image=image, gpu="T4", volumes={HF_CACHE_MOUNT_PATH: hf_vol, DB_MOUNT_PATH: db_vol})
+@modal_app.function(image=image, gpu="T4", secrets=[modal.Secret.from_name("codelens-secrets")], volumes={HF_CACHE_MOUNT_PATH: hf_vol, DB_MOUNT_PATH: db_vol})
+@modal.enter()
 def startup():
     config = load_llm_config(require_explicit=True)
     BaseReviewEngine.initialize_global(config)
 
-@modal_app.function(image=image, gpu="T4", volumes={HF_CACHE_MOUNT_PATH: hf_vol, DB_MOUNT_PATH: db_vol})
+@modal_app.function(image=image, gpu="T4", secrets=[modal.Secret.from_name("codelens-secrets")], volumes={HF_CACHE_MOUNT_PATH: hf_vol, DB_MOUNT_PATH: db_vol})
 @modal.asgi_app()
 def fastapi_app():
     try:

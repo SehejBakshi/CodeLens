@@ -6,7 +6,7 @@ from uuid import uuid4
 from app.db import ReviewDB
 from typing import Dict, List
 from concurrent.futures import ThreadPoolExecutor
-from fastapi import FastAPI, HTTPException, UploadFile, File
+from fastapi import FastAPI, HTTPException, UploadFile, File, Response
 from fastapi.middleware.cors import CORSMiddleware
 from app.schemas import FileReview, ReviewRequest, FinalReview
 from app.models.job_status import JobStatus
@@ -29,6 +29,10 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+@app.options("/{path:path}")
+async def options_handler(path: str):
+    return Response(status_code=204)
 
 # Engine registry
 engines: Dict[str, BaseReviewEngine] = {
